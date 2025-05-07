@@ -7,7 +7,9 @@ import orderRouter from "./routes/orderRouter.js";
 import jwt from "jsonwebtoken";
 
 const app = express();
+
 app.use(bodyParser.json());
+
 app.use((req, res, next) => {
   const tokenString = req.header("Authorization");
   if (tokenString != null) {

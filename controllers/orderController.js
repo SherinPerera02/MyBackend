@@ -15,19 +15,18 @@ export async function createOrder(req, res) {
     orderInfo.name = req.user.firstName + " " + req.user.lastName;
   }
 
-  //CBC00001
   let orderId = "CBC00001";
 
   const lastOrder = await Order.find().sort({ date: -1 }).limit(1);
-  //[]
-  if (lastOrder.length > 0) {
-    const lastOrderId = lastOrder[0].orderId; //"CBC00551"
 
-    const lastOrderNumberString = lastOrderId.replace("CBC", ""); //"00551"
-    const lastOrderNumber = parseInt(lastOrderNumberString); //551
-    const newOrderNumber = lastOrderNumber + 1; //552
+  if (lastOrder.length > 0) {
+    const lastOrderId = lastOrder[0].orderId;
+
+    const lastOrderNumberString = lastOrderId.replace("CBC", "");
+    const lastOrderNumber = parseInt(lastOrderNumberString);
+    const newOrderNumber = lastOrderNumber + 1;
     const newOrderNumberString = String(newOrderNumber).padStart(5, "0");
-    orderId = "CBC" + newOrderNumberString; //"CBC00552"
+    orderId = "CBC" + newOrderNumberString;
   }
   try {
     let total = 0;
@@ -68,9 +67,9 @@ export async function createOrder(req, res) {
         },
         quantity: orderInfo.products[i].qty,
       };
-      //total = total + (item.price * orderInfo.products[i].quantity)
+      //total = total + (item.price * orderInfo.products[i].qty)
       total += item.price * orderInfo.products[i].qty;
-      //labelledTotal = labelledTotal + (item.labelledPrice * orderInfo.products[i].quantity)
+      //labelledTotal = labelledTotal + (item.labelledPrice * orderInfo.products[i].qty)
       labelledTotal += item.labelledPrice * orderInfo.products[i].qty;
     }
 
@@ -96,7 +95,4 @@ export async function createOrder(req, res) {
       error: err,
     });
   }
-  //add current users name if not provided
-  //orderId generate
-  //create order object
 }
