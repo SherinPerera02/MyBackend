@@ -17,7 +17,7 @@ app.use((req, res, next) => {
   if (tokenString != null) {
     const token = tokenString.replace("Bearer ", "");
 
-    jwt.verify(token, "password@123#", (err, decoded) => {
+    jwt.verify(token, process.env.JWT_KEY, (err, decoded) => {
       if (decoded != null) {
         console.log(decoded);
         req.user = decoded;
